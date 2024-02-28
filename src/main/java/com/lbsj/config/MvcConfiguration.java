@@ -1,5 +1,6 @@
 package com.lbsj.config;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -10,11 +11,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 import java.util.ArrayList;
 import java.util.List;
 
+@Configuration
 public class MvcConfiguration extends WebMvcConfigurationSupport {
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
         List<String> list = new ArrayList<>();
-        list.add("file:" + System.getProperty("user.dir") + "/file");
+        list.add("file:" + System.getProperty("user.dir") + "/file/");
         registry.addResourceHandler("/profile/**")
                 .addResourceLocations(list.toArray(new String[0]));
     }

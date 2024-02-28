@@ -1,8 +1,9 @@
-package com.itranlin.twin.utils;
+package com.lbsj.utils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.UUID;
 
 public class CommonUtil {
 
@@ -88,15 +89,19 @@ public class CommonUtil {
         long[] ip = new long[4];
         String[] sIp = strIp.split("\\.");
         long out = 0;
-        if(sIp.length == 4) {
-            for(int i=0; i<4; i++) {
+        if (sIp.length == 4) {
+            for (int i = 0; i < 4; i++) {
                 ip[i] = Long.parseLong(sIp[i]);
             }
-            out = (ip[0]<<24) + (ip[1]<<16) + (ip[2]<<8) + ip[3];
-        }else {
+            out = (ip[0] << 24) + (ip[1] << 16) + (ip[2] << 8) + ip[3];
+        } else {
             System.out.println("ip地址不合法");
         }
         return out;
     }
 
+    public static String uuid() {
+        UUID uuid = UUID.randomUUID();
+        return uuid.toString().replace("-", "");
+    }
 }

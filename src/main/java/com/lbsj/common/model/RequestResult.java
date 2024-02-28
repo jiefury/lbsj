@@ -1,4 +1,4 @@
-package com.itranlin.twin.common.bean;
+package com.lbsj.common.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

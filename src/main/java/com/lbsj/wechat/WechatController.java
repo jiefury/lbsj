@@ -1,4 +1,4 @@
-package com.lbsj.controller;
+package com.lbsj.wechat;
 
 
 import com.alibaba.fastjson.JSONObject;

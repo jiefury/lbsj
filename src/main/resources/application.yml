@@ -1,8 +1,8 @@
-logging:
-  level:
-    com.twin: debug
-  file:
-    name: ./logs/lbsj-server.log
+#logging:
+#  level:
+#    com.twin: debug
+#  file:
+#    name: ./logs/lbsj-server.log
 wechat:
   appId: wxb03d4dfaef607b41
   secret: 958761c9d70b49787eeeabf99d47ada1
@@ -21,6 +21,13 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/lbsj?useUnicode=yes&characterEncoding=UTF8&useSSL=false&autoReconnect=true&serverTimezone=GMT%2B8&allowMultiQueries=true
     hikari:
       keepalive-time: 6000
+      auto-commit: true
+      minimum-idle: 5
+      maximum-pool-size: 10
+      connection-timeout: 60000
+      max-lifetime: 60000
+      idle-timeout: 50000
+      connection-test-query: select 1
 #  redis:
 #    host: 127.0.0.1
 #    port: 6381

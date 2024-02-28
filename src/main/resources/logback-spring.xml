@@ -9,7 +9,7 @@
 
 
 <!-- name的值是变量的名称，value的值时变量定义的值。通过定义的值会被插入到logger上下文中。定义后，可以使“${}”来使用变量。 -->
-<property name="logging.path" value="D:/logs" />
+<property name="logging.path" value="logs" />
 
 
 <!--0. 日志格式和颜色渲染 -->
@@ -179,7 +179,7 @@ level:用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERR
 <!-- 4. 最终的策略 -->
 <!-- 4.1 开发环境:打印控制台-->
 <springProfile name="dev">
-<logger name="com.supermap.controller" level="debug"/><!-- 修改此处扫描包名 -->
+<logger name="com.lbsj.*.controller" level="debug"/><!-- 修改此处扫描包名 -->
 </springProfile>
 
 

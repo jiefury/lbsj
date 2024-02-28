@@ -1,7 +1,8 @@
-package com.itranlin.twin.utils;
+package com.lbsj.utils;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -20,9 +21,10 @@ public class DateUtil {
 
     /**
      * 获取前6月时间
+     *
      * @return
      */
-    public static LocalDateTime getPastHalfYear(){
+    public static LocalDateTime getPastHalfYear() {
         CALENDAR.setTime(new Date());
         CALENDAR.add(Calendar.MONTH, -5);
         String format = D_MONTH.format(CALENDAR.getTime());
@@ -32,21 +34,31 @@ public class DateUtil {
 
     /**
      * 获取前6月月份集合
+     *
      * @return
      */
-    public static List<String> getPastHalfYearMonthList(){
+    public static List<String> getPastHalfYearMonthList() {
         List<String> list = new ArrayList<>();
 
         Calendar date = Calendar.getInstance();
         date.add(Calendar.MONTH, -5);
-        for(int i=0;i<6;i++){
+        for (int i = 0; i < 6; i++) {
             list.add(D_MONTH.format(date.getTime()));
             date.add(Calendar.MONTH, 1);
         }
         return list;
     }
 
-
+    public static String formatDate(String format) {
+        SimpleDateFormat simpleDateFormat;
+        if (StringUtils.isBlank(format)) {
+            simpleDateFormat = D_DATE;
+        } else {
+            simpleDateFormat = new SimpleDateFormat(format);
+        }
+        Calendar instance = Calendar.getInstance();
+        return simpleDateFormat.format(instance.getTime());
+    }
 
 
     public static void main(String[] args) {
