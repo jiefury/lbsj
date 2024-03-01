@@ -1,6 +1,6 @@
-#logging:
-#  level:
-#    com.twin: debug
+logging:
+  level:
+    com.lbsj: debug
 #  file:
 #    name: ./logs/lbsj-server.log
 wechat:
@@ -8,6 +8,9 @@ wechat:
   secret: 958761c9d70b49787eeeabf99d47ada1
 server:
     port: 8898
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 spring:
   application:
     name: service1
