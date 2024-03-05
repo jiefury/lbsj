@@ -5,8 +5,11 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
+import com.lbsj.filter.RequestLogFilter;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
@@ -78,6 +81,15 @@ public class MvcConfiguration extends WebMvcConfigurationSupport {
         corsConfiguration.addExposedHeader("Access-Control-Request-Headers");
         source.registerCorsConfiguration("/**", corsConfiguration);
         return new CorsFilter(source);
+    }
+
+    @Bean
+    public FilterRegistrationBean<RequestLogFilter> requestLogFilter(){
+        FilterRegistrationBean<RequestLogFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new RequestLogFilter());
+        registrationBean.addUrlPatterns("/api/*");
+        registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        return registrationBean;
     }
 
 
