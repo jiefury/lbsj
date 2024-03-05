@@ -22,7 +22,7 @@ public class PageUtils {
     }
 
     @SneakyThrows
-    public static <T, M> IPage<M> cover2Page(IPage<M> source, Class<T> destClass) {
+    public static <T, M> IPage<T> cover2Page(IPage<M> source, Class<T> destClass) {
         IPage target = new Page<>();
         target.setPages(source.getPages());
         target.setCurrent(source.getCurrent());
