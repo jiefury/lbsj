@@ -9,7 +9,7 @@ import com.lbsj.article.service.ArticleService;
 import com.lbsj.article.vo.ArticleReqVO;
 import com.lbsj.article.vo.ArticleVO;
 import com.lbsj.common.model.RequestResult;
-import com.lbsj.utils.GenerateUtils;
+import com.lbsj.utils.GeneralUtils;
 import com.lbsj.utils.page.PageUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ public class ArticleController {
     @GetMapping("/info")
     public RequestResult info(Long id) {
         ArticleEntity add = articleService.getById(id);
-        ArticleVO articleVO = GenerateUtils.cover2Bean(add, ArticleVO.class);
+        ArticleVO articleVO = GeneralUtils.cover2Bean(add, ArticleVO.class);
         return RequestResult.e(articleVO);
     }
 

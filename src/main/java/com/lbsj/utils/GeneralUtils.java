@@ -3,7 +3,7 @@ package com.lbsj.utils;
 import lombok.SneakyThrows;
 import org.springframework.beans.BeanUtils;
 
-public class GenerateUtils {
+public class GeneralUtils {
 
     @SneakyThrows
     public static <T> T cover2Bean(Object source, Class<T> clazz) {
