@@ -3,6 +3,10 @@ package com.lbsj;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.util.ResourceUtils;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 
 
 @EnableAsync
@@ -11,6 +15,13 @@ public class BootBasicApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BootBasicApplication.class, args);
+        try {
+            File readme = ResourceUtils.getFile("");
+            System.out.println("----------" + readme.getAbsolutePath());
+            System.out.println("----------" + System.getProperty("user.dir"));
+        } catch (FileNotFoundException e) {
+          e.printStackTrace();
+        }
     }
 
 }
