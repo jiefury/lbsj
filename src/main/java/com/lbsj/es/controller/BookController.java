@@ -1,14 +1,14 @@
 package com.lbsj.es.controller;
 
 
+import com.lbsj.common.model.RequestResult;
 import com.lbsj.es.entity.Book;
 import com.lbsj.es.service.impl.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 
 /**
  * @author geng
@@ -25,15 +25,15 @@ public class BookController {
     }
 
     @PostMapping
-    public Map<String, String> addBook(@RequestBody Book book) {
+    public RequestResult addBook(@RequestBody Book book) {
         bookService.addBook(book);
-        Map<String, String> map = new HashMap<>();
-        map.put("msg", "ok");
-        return map;
+        return RequestResult.e();
     }
 
     @GetMapping("/search")
     public SearchHits<Book> search(String key) {
         return bookService.find(key);
     }
+
+
 }

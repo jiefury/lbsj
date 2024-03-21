@@ -6,7 +6,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.Date;
 import java.util.List;
@@ -15,7 +14,6 @@ import java.util.List;
 @Log4j2
 public class BookService {
     private final ESBookRepository esBookRepository;
-//    private final TransactionTemplate transactionTemplate;
 
     @Autowired
     public BookService(
@@ -23,14 +21,8 @@ public class BookService {
         this.esBookRepository = esBookRepository;
     }
 
+
     public void addBook(Book book) {
-//        final Book saveBook = transactionTemplate.execute((status) ->
-//                esBookRepository.save(book)
-//        );
-//        assert saveBook != null;
-//        Book esBook = new Book();
-//        BeanUtils.copyProperties(saveBook, esBook);
-//        esBook.setId(saveBook.getId());
         try {
             book.setCreateTime(new Date());
             book.setUpdateTime(new Date());
@@ -47,4 +39,6 @@ public class BookService {
     public SearchHits<Book> find(String keyword) {
         return esBookRepository.find(keyword);
     }
+
+
 }

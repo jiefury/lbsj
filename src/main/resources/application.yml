@@ -1,6 +1,7 @@
 logging:
   level:
     com.lbsj: debug
+    org.elasticsearch: debug
 #  file:
 #    name: ./logs/lbsj-server.log
 wechat:
@@ -21,9 +22,6 @@ spring:
     elasticsearch:
       cluster-name: elasticsearch
       cluster-nodes: 127.0.0.1:9200
-#  elasticsearch:
-#    rest:
-#      uris: http://127.0.1.1:9200
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -60,3 +58,14 @@ spring:
 #  redis-stream:
 #    key: test001
 #    group: group001
+
+elasticsearch:
+  address: 110.41.185.137:9200
+  username: elastic
+  password: lbsj_dev123
+  scheme: https
+  connectTimeout: 5000
+  socketTimeout: 5000
+  connectionRequestTimeout: 5000
+  maxConnectNum: 100
+  maxConnectPerRoute: 100
