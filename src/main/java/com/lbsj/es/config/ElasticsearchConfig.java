@@ -1,7 +1,6 @@
 package com.lbsj.es.config;
 
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -26,12 +25,12 @@ import java.util.List;
 public class ElasticsearchConfig {
 
     @Autowired(required = false)
-    private ElasticsearchRuntimeEnvironment esRuntimeEnvironment;
+    private ElasticsearchEnv esRuntimeEnvironment;
 
 
     //当前es相关的配置存在则实例化RestHighLevelClient,如果不存在则不实例化RestHighLevelClient
     @Bean
-    @ConditionalOnBean(value = ElasticsearchRuntimeEnvironment.class)
+    @ConditionalOnBean(value = ElasticsearchEnv.class)
     @Qualifier
     public RestHighLevelClient restHighLevelClient() {
 

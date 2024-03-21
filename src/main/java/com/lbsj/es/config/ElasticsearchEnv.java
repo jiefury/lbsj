@@ -9,15 +9,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-/**
- * \* Created with IntelliJ IDEA.
- * \* User: 煦仔
- * \* Date: 2020-12-22
- * \* Time: 11:01
- * \* To change this template use File | Settings | File Templates.
- * \* Description: ElasticSearch 配置
- * \
- */
 @Setter
 @Getter
 @AllArgsConstructor
@@ -25,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "elasticsearch")
 @ConditionalOnProperty("elasticsearch.address")
-public class ElasticsearchRuntimeEnvironment {
+public class ElasticsearchEnv {
 
     /**
      * es连接地址，如果有多个用,隔开

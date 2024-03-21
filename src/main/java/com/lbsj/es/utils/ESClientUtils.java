@@ -1,4 +1,4 @@
-package com.lbsj.utils;
+package com.lbsj.es.utils;
 
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;

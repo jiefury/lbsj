@@ -8,16 +8,13 @@ wechat:
   appId: wxb03d4dfaef607b41
   secret: 958761c9d70b49787eeeabf99d47ada1
 server:
-    port: 8898
+  port: 8898
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 spring:
   application:
     name: service1
-  mvc:
-    pathmatch:
-      matching-strategy: ANT_PATH_MATCHER
   data:
     elasticsearch:
       cluster-name: elasticsearch

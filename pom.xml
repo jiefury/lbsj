@@ -283,7 +283,6 @@
                     <excludes>
                         <exclude>bin/*</exclude>
                         <exclude>assembly/*</exclude>
-                        <exclude>static/**</exclude>
                         <exclude>lib/**</exclude>
                         <exclude>templates/**</exclude>
                         <exclude>application.yml</exclude>
