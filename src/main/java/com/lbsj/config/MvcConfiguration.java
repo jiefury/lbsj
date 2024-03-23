@@ -6,14 +6,20 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.lbsj.filter.RequestLogFilter;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -22,6 +28,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
@@ -93,5 +100,39 @@ public class MvcConfiguration extends WebMvcConfigurationSupport {
         return registrationBean;
     }
 
+//    @Bean
+//    public InternalResourceViewResolver viewResolver() {
+//        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+//        viewResolver.setPrefix("/static/");
+//        viewResolver.setSuffix(".html");
+//        return viewResolver;
+//    }
 
+    @Bean
+    public RestTemplate restTemplate(){
+            // 创建连接池管理器
+            PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
+            connectionManager.setMaxTotal(100);  // 设置最大连接数
+            connectionManager.setDefaultMaxPerRoute(20);  // 设置每个路由的最大连接数
+
+            // 配置HTTP客户端
+            HttpClientBuilder clientBuilder = HttpClients.custom()
+                    .setConnectionManager(connectionManager)
+                    .disableContentCompression()  // 禁止压缩
+                    .setDefaultRequestConfig(RequestConfig.DEFAULT);
+
+            // 创建HTTP客户端工厂
+            HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+            requestFactory.setHttpClient(clientBuilder.build());
+
+            // 创建RestTemplate
+            RestTemplate restTemplate = new RestTemplate(requestFactory);
+
+            // 配置HttpMessageConverter
+            List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
+            messageConverters.add(new MappingJackson2HttpMessageConverter());
+            restTemplate.setMessageConverters(messageConverters);
+
+            return restTemplate;
+    }
 }

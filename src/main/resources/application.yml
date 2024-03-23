@@ -1,12 +1,11 @@
 logging:
   level:
-    com.lbsj: debug
     org.elasticsearch: debug
-#  file:
-#    name: ./logs/lbsj-server.log
 wechat:
+  url: https://api.weixin.qq.com
   appId: wxb03d4dfaef607b41
   secret: 958761c9d70b49787eeeabf99d47ada1
+  vToken: chenjunling
 server:
   port: 8898
 mybatis-plus:
@@ -19,7 +18,6 @@ spring:
     elasticsearch:
       cluster-name: elasticsearch
       cluster-nodes: 127.0.0.1:9200
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root

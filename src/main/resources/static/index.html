@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="微信测试" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script type="text/javascript" src="https://cdn.bootcss.com/vue/2.6.11/vue.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+</head>
+<body>
+<div id="app">
+    <button @click="getQRcode"> 扫码 </button>
+</div>
+<script type="text/javascript">
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                url:''
+            }
+        },
+        computed:{},
+        created(){
+            const {search,href} = location;
+            const parmt = this.getParmt(search);
+            if(!parmt.code){
+                this.getCodeUrl(href);
+                return;
+            }
+            // this.getOpenid(parmt.code);
+            this.getUser(parmt.code);
+            this.url = href;
+        },
+        methods:{
+            conOut(){
+                console.log("调用输出",this.msg);
+
+            },
+            getParmt(str){
+                if(!str) return {};
+                const arr = str.slice(1).split("&");
+                const obj={};
+                arr.forEach((item)=>{
+                    const list = item.split("=");
+                    if(!list || list.length!==2){
+                        return;
+                    }
+                    obj[list[0]]=list[1];
+                })
+                return obj;
+            },
+            getCodeUrl(page,inf=null){
+                let uri = encodeURIComponent(page); // 这里务必编码
+                let scope = 'snsapi_userinfo'; // 获取用户信息
+                // let scope = 'snsapi_base'; // 静默授权，仅可获取openid,
+                const appid = "wx6904b7265d47210d";
+                window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${uri}&response_type=code&scope=${scope}&state=${inf}#wechat_redirect`;
+            },
+            getOpenid(code){
+                axios.get("/dome/getOpenid",{
+                    params:{code}
+                }).then(function (res) {
+                    console.log("返回结果==>",res);
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            getUser(code){
+                axios.get("/dome/getUser",{
+                    params:{code}
+                }).then(function (res) {
+                    console.log("返回结果==>",res);
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            getQRcode(){
+                this.initJssdkShare(this.url).then(()=>{
+                    wx.scanQRCode({
+                        needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                        success: function (res) {
+                            console.log(res)
+                        },
+                        cencel: function (r) { //取消
+                            console.log(r);
+                        },
+                        fail:function(err){
+                            console.log(err)
+                        }
+                    })
+                }).catch(function (err){
+                    console.log("err:"+err);
+                })
+            },
+            //判断是否在微信中
+            isWechat(){
+                const ua = window.navigator.userAgent.toLowerCase();
+                if (ua.match(/micromessenger/i) == 'micromessenger') {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            //  初始化sdk配置
+            initJssdkShare(url){
+                return new Promise((resolve, reject) => {
+                    axios.get("/dome/getJsSign", {
+                        params: {url}
+                    }).then(function (res) {
+                        console.log("返回结果==>", res);
+                        wx.config({
+                            debug: false,
+                            appId: res.data.appId,
+                            timestamp: parseInt(res.data.timestamp),
+                            nonceStr: res.data.noncestr,
+                            signature: res.data.signature,
+                            jsApiList: [
+                                'checkJsApi',
+                                'getLocation', //获取地理位置接口
+                                'openLocation',//地图查看位置接口
+                                'scanQRCode' //调用扫码
+                            ]
+                        });
+
+                        wx.ready(() => {
+                            resolve();
+                        })
+                    }).catch(function (err){
+                        reject(err);
+                    })
+                })
+            }
+        },
+        beforeMount(){
+            console.log("挂载前生命周期");
+        },
+        mounted(){
+            console.log("挂载完成生命周期");
+        },
+        watch:{}
+    })
+</script>
+</body>
+</html>
