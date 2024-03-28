@@ -16,8 +16,7 @@ public class BookService {
     private final ESBookRepository esBookRepository;
 
     @Autowired
-    public BookService(
-            ESBookRepository esBookRepository) {
+    public BookService(ESBookRepository esBookRepository) {
         this.esBookRepository = esBookRepository;
     }
 
@@ -28,6 +27,7 @@ public class BookService {
             book.setUpdateTime(new Date());
             Book save = esBookRepository.save(book);
         } catch (Exception e) {
+            e.printStackTrace();
             log.error(String.format("保存ES错误！%s", e.getMessage()));
         }
     }

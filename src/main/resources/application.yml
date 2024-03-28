@@ -1,11 +1,13 @@
 logging:
   level:
-    org.elasticsearch: debug
+    org:
+      elasticsearch: debug
+      springframework: debug
 wechat:
   url: https://api.weixin.qq.com
-  appId: wxb03d4dfaef607b41
-  secret: 958761c9d70b49787eeeabf99d47ada1
-  vToken: chenjunling
+  appId: wx87d22b0ea1d45c6d
+  secret: 9409d2e83ad0a849cb6f3c6c13033f5d
+  vToken:
 server:
   port: 8898
 mybatis-plus:
