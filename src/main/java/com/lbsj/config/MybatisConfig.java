@@ -21,4 +21,9 @@ public class MybatisConfig {
         interceptor.setOptimizeJoin(false);
         return interceptor;
     }
+
+    @Bean
+    public EasySqlInjector sqlInjector() {
+        return new EasySqlInjector();
+    }
 }
