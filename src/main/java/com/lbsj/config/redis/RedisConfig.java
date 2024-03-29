@@ -1,4 +1,4 @@
-package com.lbsj.config;
+package com.lbsj.config.redis;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
