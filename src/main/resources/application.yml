@@ -3,6 +3,8 @@ logging:
     org:
       elasticsearch: debug
       springframework: debug
+upload:
+  path: d:/opt/file
 wechat:
   url: https://api.weixin.qq.com
   appId: wx87d22b0ea1d45c6d

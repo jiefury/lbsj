@@ -14,7 +14,7 @@ public class WorkServiceImpl implements IWorkService {
     @Override
     public String work() {
         log.info("执行任务:{}", DateUtil.now());
-        int i = 1 / 0;
+//        int i = 1 / 0;
         return "workwork";
     }
 }
