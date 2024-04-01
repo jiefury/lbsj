@@ -22,8 +22,8 @@ public class SysParamsConfig {
     @Value("${upload.path}")
     public void setTempDirPath(String tempDirPath) {
         boolean linux = Platform.isLinux();
-        if (linux) {
-
+        if (!linux) {
+            tempDirPath = "d:" + tempDirPath;
         }
         TEMP_DIR_PATH = tempDirPath;
     }

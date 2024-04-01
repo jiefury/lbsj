@@ -1,4 +1,4 @@
-package com.lbsj.article.vo;
+package com.lbsj.article.model.vo;
 
 import com.lbsj.common.model.PageDTO;
 import lombok.Data;

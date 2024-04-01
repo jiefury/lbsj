@@ -1,4 +1,4 @@
-package com.lbsj.article.dto;
+package com.lbsj.article.model.dto;
 
 import lombok.Data;
 

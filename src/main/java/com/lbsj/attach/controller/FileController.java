@@ -1,9 +1,11 @@
-package com.lbsj.attach;
+package com.lbsj.attach.controller;
 
+import com.lbsj.common.annotation.FileRecord;
 import com.lbsj.common.model.FileVO;
 import com.lbsj.common.model.RequestResult;
 import com.lbsj.common.model.StatusEnum;
 import com.lbsj.config.SysParamsConfig;
+import com.lbsj.utils.CommonUtil;
 import org.apache.commons.io.IOUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,11 +23,13 @@ import java.io.IOException;
 public class FileController {
 
     @PostMapping("/upload")
+    @FileRecord
     public RequestResult<FileVO> upload(@RequestParam("file") MultipartFile file) {
         try {
             String filename = file.getOriginalFilename();
-            String subFilePath = SysParamsConfig.getFilePath(filename);
-            String path = SysParamsConfig.TEMP_DIR_PATH + subFilePath;
+            String suffix = filename.substring(filename.lastIndexOf(".") + 1);
+            String reFileName = CommonUtil.uuid() + "." + suffix;
+            String path = SysParamsConfig.TEMP_DIR_PATH + reFileName;
             File uploadFile = new File(path);
             if (uploadFile.exists()) {
                 uploadFile.delete();
@@ -35,7 +39,9 @@ public class FileController {
                 file.transferTo(uploadFile);
                 FileVO vo = new FileVO();
                 vo.setFileName(filename);
-                vo.setFileUrl(subFilePath);
+                vo.setFileUrl(reFileName);
+                vo.setRefileName(reFileName);
+                vo.setSuffix(suffix);
                 return RequestResult.e(StatusEnum.OK, vo);
             }
         } catch (Exception e) {
@@ -45,7 +51,7 @@ public class FileController {
         return RequestResult.e(StatusEnum.FAIL);
     }
 
-    @PostMapping("/download")
+    @RequestMapping("/download")
     public void download(String fileName, HttpServletResponse response) {
         response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
         response.setContentType("application/force-download");

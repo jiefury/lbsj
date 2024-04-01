@@ -26,9 +26,7 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
@@ -41,8 +39,8 @@ public class MvcConfiguration extends WebMvcConfigurationSupport {
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
         List<String> list = new ArrayList<>();
         list.add("file:" + System.getProperty("user.dir") + "/file/");
-        registry.addResourceHandler("/profile/**")
-                .addResourceLocations(list.toArray(new String[0]));
+        list.add("file:" + SysParamsConfig.TEMP_DIR_PATH);
+        registry.addResourceHandler("/profile/**").addResourceLocations(list.toArray(new String[0]));
     }
 
     @Override
@@ -54,19 +52,13 @@ public class MvcConfiguration extends WebMvcConfigurationSupport {
     protected void addInterceptors(InterceptorRegistry registry) {
         super.addInterceptors(registry);
     }
+
     private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
+
     @Override
     protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder()
-                .indentOutput(true)
-                .dateFormat(new SimpleDateFormat("yyyy-MM-dd"))
-                .simpleDateFormat(DATE_TIME_FORMAT)
-                .serializers(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)))
-                .serializers(new LocalDateSerializer(DateTimeFormatter.ofPattern(DATE_FORMAT)))
-                .deserializers(new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)))
-                .deserializers(new LocalDateDeserializer(DateTimeFormatter.ofPattern(DATE_FORMAT)))
-                .modulesToInstall(new ParameterNamesModule());
+        Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder().indentOutput(true).dateFormat(new SimpleDateFormat("yyyy-MM-dd")).simpleDateFormat(DATE_TIME_FORMAT).serializers(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT))).serializers(new LocalDateSerializer(DateTimeFormatter.ofPattern(DATE_FORMAT))).deserializers(new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT))).deserializers(new LocalDateDeserializer(DateTimeFormatter.ofPattern(DATE_FORMAT))).modulesToInstall(new ParameterNamesModule());
         converters.add(new MappingJackson2HttpMessageConverter(builder.build()));
     }
 
@@ -92,7 +84,7 @@ public class MvcConfiguration extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public FilterRegistrationBean<RequestLogFilter> requestLogFilter(){
+    public FilterRegistrationBean<RequestLogFilter> requestLogFilter() {
         FilterRegistrationBean<RequestLogFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new RequestLogFilter());
         registrationBean.addUrlPatterns("/api/*");
@@ -109,30 +101,28 @@ public class MvcConfiguration extends WebMvcConfigurationSupport {
 //    }
 
     @Bean
-    public RestTemplate restTemplate(){
-            // 创建连接池管理器
-            PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
-            connectionManager.setMaxTotal(100);  // 设置最大连接数
-            connectionManager.setDefaultMaxPerRoute(20);  // 设置每个路由的最大连接数
+    public RestTemplate restTemplate() {
+        // 创建连接池管理器
+        PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
+        connectionManager.setMaxTotal(100);  // 设置最大连接数
+        connectionManager.setDefaultMaxPerRoute(20);  // 设置每个路由的最大连接数
 
-            // 配置HTTP客户端
-            HttpClientBuilder clientBuilder = HttpClients.custom()
-                    .setConnectionManager(connectionManager)
-                    .disableContentCompression()  // 禁止压缩
-                    .setDefaultRequestConfig(RequestConfig.DEFAULT);
+        // 配置HTTP客户端
+        HttpClientBuilder clientBuilder = HttpClients.custom().setConnectionManager(connectionManager).disableContentCompression()  // 禁止压缩
+                .setDefaultRequestConfig(RequestConfig.DEFAULT);
 
-            // 创建HTTP客户端工厂
-            HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
-            requestFactory.setHttpClient(clientBuilder.build());
+        // 创建HTTP客户端工厂
+        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+        requestFactory.setHttpClient(clientBuilder.build());
 
-            // 创建RestTemplate
-            RestTemplate restTemplate = new RestTemplate(requestFactory);
+        // 创建RestTemplate
+        RestTemplate restTemplate = new RestTemplate(requestFactory);
 
-            // 配置HttpMessageConverter
-            List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
-            messageConverters.add(new MappingJackson2HttpMessageConverter());
-            restTemplate.setMessageConverters(messageConverters);
+        // 配置HttpMessageConverter
+        List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
+        messageConverters.add(new MappingJackson2HttpMessageConverter());
+        restTemplate.setMessageConverters(messageConverters);
 
-            return restTemplate;
+        return restTemplate;
     }
 }

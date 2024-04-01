@@ -1,8 +1,8 @@
 package com.lbsj.article.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.lbsj.article.dto.ArticleDTO;
-import com.lbsj.article.entity.ArticleEntity;
+import com.lbsj.article.model.dto.ArticleDTO;
+import com.lbsj.article.model.entity.ArticleEntity;
 
 public interface ArticleService extends IService<ArticleEntity> {
 

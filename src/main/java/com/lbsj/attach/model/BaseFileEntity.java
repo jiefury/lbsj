@@ -1,4 +1,4 @@
-package com.lbsj.article.entity;
+package com.lbsj.attach.model;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -10,24 +10,18 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
-@TableName("article")
-public class ArticleEntity extends Model<ArticleEntity> implements Serializable {
+@TableName("base_file")
+public class BaseFileEntity extends Model<BaseFileEntity> implements Serializable {
 
     @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
-    private String title;
-    private String subTitle;
-    private String author;
-    private LocalDate publishDate;
-    private String publishInst;
-    private String summary;
-    private String topicType;
-    private String trade;
-    private String files;
+    private String filename;
+    private String filePath;
+    private String suffix;
+    private String reFilename;
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
