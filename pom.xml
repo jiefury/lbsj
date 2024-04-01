@@ -9,7 +9,7 @@
         <relativePath/>
     </parent>
     <groupId>com.lbsj</groupId>
-    <artifactId>lbsj-serverr</artifactId>
+    <artifactId>lbsj-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>lbsj-server</name>
     <description>公共项目</description>
@@ -238,7 +238,7 @@
     </dependencies>
 
     <build>
-        <finalName>twin-server</finalName>
+        <finalName>lbsj-server</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
