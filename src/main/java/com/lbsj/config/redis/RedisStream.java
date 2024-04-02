@@ -15,8 +15,6 @@ import java.util.Map;
 
 /**
  * 对redis stream命令的一些实现，可单独使用
- *
- * @author cheneq
  */
 @Slf4j
 @Component
@@ -32,7 +30,7 @@ public class RedisStream {
      * @param group
      * @return
      */
-    public String creartGroup(String key, String group) {
+    public String createGroup(String key, String group) {
         return redisTemplate.opsForStream().createGroup(key, group);
     }
 

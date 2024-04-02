@@ -1,16 +1,19 @@
 package com.lbsj.config.redis;
 
 import com.lbsj.utils.SpringUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.redis.RedisSystemException;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.stream.*;
 import org.springframework.data.redis.stream.StreamMessageListenerContainer;
 import org.springframework.data.redis.stream.Subscription;
+import org.springframework.util.ReflectionUtils;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -19,7 +22,7 @@ import java.util.Objects;
 
 
 @Slf4j
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 //@Configuration
 public class RedisStreamConfig {
 
@@ -32,9 +35,6 @@ public class RedisStreamConfig {
 
     @Autowired
     private RedisStreamListenerMessage streamListener;
-
-
-//    private final RedisStream redisStream = SpringUtils.getBean(RedisStream.class);
 
 
     /**
@@ -90,7 +90,6 @@ public class RedisStreamConfig {
                         // 获取消息的过程或获取到消息给具体的消息者处理的过程中，发生了异常的处理
                         .build();
 
-
         StreamMessageListenerContainer<String, MapRecord<String, String, String>> streamMessageListenerContainer =
                 StreamMessageListenerContainer.create(factory, options);
 
@@ -119,7 +118,7 @@ public class RedisStreamConfig {
             boolean consumerExist = Objects.nonNull(infoGroups);
             // 创建不存在的分组
             if (!consumerExist) {
-                redisStream.creartGroup(key, consumer);
+                redisStream.createGroup(key, consumer);
             }
         }
     }

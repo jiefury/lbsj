@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.lbsj.filter.RequestLogFilter;
+import com.lbsj.interceptor.AuthInterceptor;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
@@ -40,7 +41,8 @@ public class MvcConfiguration extends WebMvcConfigurationSupport {
         List<String> list = new ArrayList<>();
         list.add("file:" + System.getProperty("user.dir") + "/file/");
         list.add("file:" + SysParamsConfig.TEMP_DIR_PATH);
-        registry.addResourceHandler("/profile/**").addResourceLocations(list.toArray(new String[0]));
+        list.add("classpath:/static/");
+        registry.addResourceHandler("/profile/**", "/**").addResourceLocations(list.toArray(new String[0]));
     }
 
     @Override
@@ -50,6 +52,9 @@ public class MvcConfiguration extends WebMvcConfigurationSupport {
 
     @Override
     protected void addInterceptors(InterceptorRegistry registry) {
+
+        registry.addInterceptor(new AuthInterceptor())
+                .addPathPatterns("/**");
         super.addInterceptors(registry);
     }
 
@@ -58,7 +63,14 @@ public class MvcConfiguration extends WebMvcConfigurationSupport {
 
     @Override
     protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder().indentOutput(true).dateFormat(new SimpleDateFormat("yyyy-MM-dd")).simpleDateFormat(DATE_TIME_FORMAT).serializers(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT))).serializers(new LocalDateSerializer(DateTimeFormatter.ofPattern(DATE_FORMAT))).deserializers(new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT))).deserializers(new LocalDateDeserializer(DateTimeFormatter.ofPattern(DATE_FORMAT))).modulesToInstall(new ParameterNamesModule());
+        Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder().indentOutput(true)
+                .dateFormat(new SimpleDateFormat("yyyy-MM-dd"))
+                .simpleDateFormat(DATE_TIME_FORMAT)
+                .serializers(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)))
+                .serializers(new LocalDateSerializer(DateTimeFormatter.ofPattern(DATE_FORMAT)))
+                .deserializers(new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)))
+                .deserializers(new LocalDateDeserializer(DateTimeFormatter.ofPattern(DATE_FORMAT)))
+                .modulesToInstall(new ParameterNamesModule());
         converters.add(new MappingJackson2HttpMessageConverter(builder.build()));
     }
 
